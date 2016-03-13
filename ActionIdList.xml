@@ -17,22 +17,22 @@
     <Action>
       <id>1</id>
       <title>TestDisplay</title>
-      <part>
+      <parts>
         <h1>main.html</h1>
         <h2>menu.html</h2>
-        <h3>ADSD000001</h3>
-      </part>
+        <h3>footer.html</h3>
+      </parts>
       <status>
       </status>
     </Action>
     <Action>
       <id>2</id>
       <title>TestDisplay2</title>
-      <part>
-        <h1>ATID000001</h1>
-        <h2>AMMD000001</h2>
-        <h3>ADSD000001</h3>
-      </part>
+      <parts>
+        <h1>main0.html</h1>
+        <h2>menu0.html</h2>
+        <h3>footer0.html</h3>
+      </parts>
       <status>
       </status>
     </Action>

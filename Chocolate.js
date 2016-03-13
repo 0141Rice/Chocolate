@@ -3,10 +3,12 @@
  *
  * @author 0141Rice
  **/
+var THIS_APPLICATION_ACTION_IDS;
 $(function () {
-  loadHtml("body", "template/default.html");
-  var pageConfig = initialLoadConfig();
-  console.log(pageConfig);
+  initialLoadConfig().done(function (res) {
+    THIS_APPLICATION_ACTION_IDS = res;
+    loadHtml("body", "template/default.html");
+  });
 });
 
 var d=document;
@@ -17,30 +19,28 @@ function titleChange(str) {
 }
 
 function initialLoadConfig() {
-  var result;
-  $.ajax({
+  return $.ajax({
     url: 'ActionIdList.xml',
     type: 'GET',
     dataType:'xml',
-    timeout: 1000,
-    async: false,
-    error: function (res) {
-      // ErrorLogic
-    },
-    success: function (res) {
-      result = getActions(res);
-    }
+    timeout: 1000
   });
-  return result;
+}
+
+function change(actionId) {
+  callAction(actionId, getActions(THIS_APPLICATION_ACTION_IDS));
 }
 
 function loadXml(path, actionId) {
-  return $.ajax({
+  $.ajax({
     url: path,
     type: 'GET',
     dataType:'xml',
     timeout: 1000,
-    error: function (res) {
+    error: function (res, a, b) {
+      console.log(res.status);
+      console.log(a);
+      console.log(b.message);
     },
     success: function (res) {
       var actions = getActions(res);
@@ -53,6 +53,10 @@ function callAction(id, array) {
   for (var i = 0; i < array.length; i++) {
     if (array[i].id === id) {
       titleChange(array[i].action.title);
+      for (var j = 0; j < array[i].parts.length; j++) {
+        loadHtml("#" + array[i].parts[j][0], "template/" + array[i].parts[j][1]);
+      }
+
       return true;
     }
   }
@@ -67,7 +71,12 @@ function getActions(responseText) {
     var actionObj = new Object();
     action.id = $(this).find("id").text();
     actionObj.title = $(this).find("title").text();
-    actionObj.test = "2";
+    var parts = $(this).find("parts").children();
+    var partsArray = new Array();
+    for (var i = 0; i < parts.length; i++) {
+      partsArray.push([parts[i].nodeName, parts[i].childNodes[0].nodeValue]);
+    }
+    action.parts = partsArray;
     action.action = actionObj;
     outputActions.push(action);
   });
@@ -87,6 +96,12 @@ function loadHtml(target, path) {
     success: function (res) {
       $(target).empty();
       $(target).append(res);
+
+      if (!$('script[src="template/loadedscript.js"]').length) {
+        var script = document.createElement('script');
+        script.src = 'template/loadedscript.js';
+        document.getElementsByTagName("head")[0].appendChild(script);
+      }
     }
   });
 }
