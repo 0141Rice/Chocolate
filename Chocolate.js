@@ -1,66 +1,68 @@
 /**
- * ChocolateBanana.js
+ * Chocolate.js
  *
  * @author 0141Rice
  **/
-var THIS_APPLICATION_ACTION_IDS;
+
+// DI Collection
+var CHOCOLATE_COLLECTIONS;
+var CHOCOLATE_THIS_BLOCK;
+var SCREEN_CURRENT_PATH;
+var SCRIPT_CURRENT_PATH;
+
+// Initialize
 $(function () {
   initialLoadConfig().done(function (res) {
-    THIS_APPLICATION_ACTION_IDS = res;
-    loadHtml("body", "template/default.html");
+    //CHOCOLATE_COLLECTIONS = res;
+    //SCREEN_CURRENT_PATH = res
+    setChocolate(res);
+    loadHtml("body", SCREEN_CURRENT_PATH + "default.html");
   });
 });
 
-var d=document;
-
-
-function titleChange(str) {
-  d.title = str;
+function setChocolate(response) {
+  var $res = $(response);
+  CHOCOLATE_COLLECTIONS = $res;
+  SCREEN_CURRENT_PATH = $res.find('ScreenCurrentPath').text();
+  SCRIPT_CURRENT_PATH = $res.find('ScriptCurrentPath').text();
 }
 
 function initialLoadConfig() {
   return $.ajax({
-    url: 'ActionIdList.xml',
-    type: 'GET',
+    url: 'ChocolateList.xml',
+    type: 'POST',
     dataType:'xml',
     timeout: 1000
   });
 }
 
 function change(actionId) {
-  callAction(actionId, getActions(THIS_APPLICATION_ACTION_IDS));
-}
-
-function loadXml(path, actionId) {
-  $.ajax({
-    url: path,
-    type: 'GET',
-    dataType:'xml',
-    timeout: 1000,
-    error: function (res, a, b) {
-      console.log(res.status);
-      console.log(a);
-      console.log(b.message);
-    },
-    success: function (res) {
-      var actions = getActions(res);
-      callAction(actionId, actions);
-    }
-  });
+  callAction(actionId, getActions(CHOCOLATE_COLLECTIONS));
 }
 
 function callAction(id, array) {
-  for (var i = 0; i < array.length; i++) {
-    if (array[i].id === id) {
-      titleChange(array[i].action.title);
-      for (var j = 0; j < array[i].parts.length; j++) {
-        loadHtml("#" + array[i].parts[j][0], "template/" + array[i].parts[j][1]);
-      }
+  if (CHOCOLATE_THIS_BLOCK === id)
+    return false;
 
+  for (var i = 0; i < array.length; i++) {
+    var input = array[i];
+    if (input.id === id) {
+      CHOCOLATE_THIS_BLOCK = id;
+      setTitle(input.action.title);
+      setParts(input.action.parts);
       return true;
     }
   }
-  location.href = "http://www.google.co.jp/";
+  return false;
+}
+
+function setTitle(str) {
+  document.title = str;
+}
+function setParts(partsArray) {
+  for (i in partsArray) {
+    loadHtml('#' + partsArray[i][0], SCREEN_CURRENT_PATH + partsArray[i][1]);
+  }
 }
 
 function getActions(responseText) {
@@ -76,7 +78,7 @@ function getActions(responseText) {
     for (var i = 0; i < parts.length; i++) {
       partsArray.push([parts[i].nodeName, parts[i].childNodes[0].nodeValue]);
     }
-    action.parts = partsArray;
+    actionObj.parts = partsArray;
     action.action = actionObj;
     outputActions.push(action);
   });
@@ -91,17 +93,33 @@ function loadHtml(target, path) {
     dataType:'text',
     timeout: 1000,
     error: function (res) {
-      $('')
+      // Err
     },
     success: function (res) {
       $(target).empty();
       $(target).append(res);
 
-      if (!$('script[src="template/loadedscript.js"]').length) {
+      var externPath = CScriptPath('loadedscript.js');
+      if (!$('script[src="' + externPath + '"]').length) {
         var script = document.createElement('script');
-        script.src = 'template/loadedscript.js';
+        script.src = externPath;
         document.getElementsByTagName("head")[0].appendChild(script);
       }
     }
   });
+}
+
+function CScriptPath(path) {
+  return SCRIPT_CURRENT_PATH + path;
+}
+function CScreenPath(path) {
+  return SCREEN_CURRENT_PATH + path;
+}
+
+function byId(str) {
+  return '#' + str;
+}
+
+function byClass(str) {
+  return '.' + str;
 }

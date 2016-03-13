@@ -9,7 +9,8 @@
 -->
 <ChocolateBanana>
   <JDBC>"https://wwww.0141rice.org/testChocolateBanana.db"</JDBC>
-  <ActionPath></ActionPath>
+  <ScreenCurrentPath>screens/</ScreenCurrentPath>
+  <ScriptCurrentPath>js/</ScriptCurrentPath>
   <Source></Source>
   <Resource></Resource>
 
