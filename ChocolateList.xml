@@ -19,9 +19,10 @@
       <id>1</id>
       <title>TestDisplay</title>
       <parts>
-        <h1>main.html</h1>
-        <h2>menu.html</h2>
-        <h3>footer.html</h3>
+        <head>main.html</head>
+        <menu>menu.html</menu>
+        <main>main.html</main>
+        <foot>footer.html</foot>
       </parts>
       <status>
       </status>
@@ -30,12 +31,20 @@
       <id>2</id>
       <title>TestDisplay2</title>
       <parts>
-        <h1>main0.html</h1>
-        <h2>menu0.html</h2>
-        <h3>footer0.html</h3>
+        <head>main0.html</head>
+        <menu>menu0.html</menu>
+        <main>main0.html</main>
+        <foot>footer0.html</foot>
       </parts>
       <status>
       </status>
+    </Action>
+    <Action>
+      <id>3</id>
+      <title>TestDisplay2</title>
+      <parts>
+        <main>main3.html</main>
+      </parts>
     </Action>
   </ActionIds>
 </ChocolateBanana>
