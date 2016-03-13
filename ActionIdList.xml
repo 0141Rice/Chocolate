@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* このファイルは自動生成対象です。
+* 実装者は拡張を行わないでください。
+*
+* @author USER_NAMES
+* @author 0141Rice
+* ChocolateBanana.js
+-->
+<ChocolateBanana>
+  <JDBC>"https://wwww.0141rice.org/testChocolateBanana.db"</JDBC>
+  <ActionPath></ActionPath>
+  <Source></Source>
+  <Resource></Resource>
+
+  <ActionIds>
+    <Action>
+      <id>1</id>
+      <title>TestDisplay</title>
+      <part>
+        <h1>main.html</h1>
+        <h2>menu.html</h2>
+        <h3>ADSD000001</h3>
+      </part>
+      <status>
+      </status>
+    </Action>
+    <Action>
+      <id>2</id>
+      <title>TestDisplay2</title>
+      <part>
+        <h1>ATID000001</h1>
+        <h2>AMMD000001</h2>
+        <h3>ADSD000001</h3>
+      </part>
+      <status>
+      </status>
+    </Action>
+  </ActionIds>
+</ChocolateBanana>
